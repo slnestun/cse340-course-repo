@@ -31,23 +31,38 @@ app.set('views', path.join(currentDirectory, 'src/views'));
 /**
   * Routes
   */
+const getPageTitle = (pageName) => {
+    const pageTitles = {
+        home: 'Home',
+        organizations: 'Our Partner Organizations',
+        projects: 'Service Projects',
+        categories: 'Service Categories'
+    };
+
+    if (!pageTitles[pageName]) {
+        return 'CSE 340 Service Network';
+    }
+
+    return pageTitles[pageName];
+};
+
 const renderHome = async (req, res) => {
-    const title = 'Home';
+    const title = getPageTitle('home');
     res.render('home', { title });
 };
 
 const renderOrganizations = async (req, res) => {
-    const title = 'Our Partner Organizations';
+    const title = getPageTitle('organizations');
     res.render('organizations', { title });
 };
 
 const renderProjects = async (req, res) => {
-    const title = 'Service Projects';
+    const title = getPageTitle('projects');
     res.render('projects', { title });
 };
 
 const renderCategories = async (req, res) => {
-    const title = 'Service Categories';
+    const title = getPageTitle('categories');
     res.render('categories', { title });
 };
 
