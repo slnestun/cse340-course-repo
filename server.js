@@ -3,7 +3,7 @@ import {fileURLToPath} from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
 import {getAllOrganizations} from './src/models/organizations.js';
-import {getAllProjects} from './src/models/project.js';
+import {getAllProjects} from './src/models/projects.js';
 
 const nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
 const port = process.env.PORT || 3000;
@@ -60,8 +60,12 @@ const renderHome = async (req, res) => {
 };**/
 
 const renderProjects = async (req, res) => {
-    const title = getPageTitle('projects');
-    res.render('projects', { title });
+        const title = getPageTitle('projects');
+        const projects = await getAllProjects();
+
+        console.log('Projects:', projects);
+
+        res.render('projects', { title, projects });
 };
 
 const renderCategories = async (req, res) => {
@@ -83,13 +87,7 @@ app.get('/organizations', async (req, res) => {
   const title = 'Our Partner Organizations';
   res.render('organizations', {title, organizations});
 });
-//app.get('/projects', renderProjects);
-app.get('/projects', async (req, res) => {
-  const projects =  await getAllProjects();
-
-  const title = 'Service Projects';
-  res.render('projects', {title, projects});
-})
+app.get('/projects', renderProjects);
 app.get('/categories', renderCategories);
 
 app.listen(port, async () => {
