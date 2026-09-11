@@ -156,3 +156,31 @@ VALUES (
         'Unity Community Hub',
         '2024-05-30'
     );
+-- ========================================
+-- category Table
+-- ========================================
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+--- ========================================
+--- project_category Table
+--- ========================================
+CREATE TABLE project_category (
+    project_id INT NOT NULL REFERENCES service_project(project_id),
+    category_id INT NOT NULL REFERENCES category(category_id),
+    PRIMARY KEY (project_id, category_id),
+    FOREIGN KEY (project_id) REFERENCES service_project(project_id),
+    FOREIGN KEY (category_id) REFERENCES category(category_id)
+);
+INSERT INTO category (name)
+VALUES ('Community Development'),
+    ('Health and Wellness'),
+    ('Disaster Relief');
+INSERT INTO project_category (project_id, category_id)
+VALUES (1, 1),
+    (1, 3),
+    (2, 1),
+    (2, 2),
+    (3, 1),
+    (3, 2);
