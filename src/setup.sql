@@ -35,11 +35,14 @@ VALUES (
 -- ========================================
 CREATE TABLE service_project (
     project_id SERIAL PRIMARY KEY,
-    organization_id INT NOT NULL REFERENCES organization(organization_id),
+    organization_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
     location VARCHAR(255) NOT NULL,
-    date DATE NOT NULL
+    date DATE NOT NULL,
+    CONSTRAINT fk_service_project_organization
+        FOREIGN KEY (organization_id)
+        REFERENCES organization(organization_id)
 );
 -- ========================================
 -- Insert sample data: Service Projects
@@ -56,7 +59,7 @@ VALUES (
         'Community Park Renovation',
         'Helping to renovate the local community park with sustainable materials.',
         'Downtown Community Center',
-        '2023-10-15'
+        CURRENT_DATE + 7
     ),
     (
         1,
@@ -91,14 +94,14 @@ VALUES (
         'Community Compost Training',
         'Teaching residents how to compost food waste and reduce landfill contributions.',
         'Northside Community Garden',
-        '2024-01-12'
+        CURRENT_DATE + 14
     ),
     (
         2,
         'Youth Farm-to-Table Event',
         'An educational event connecting students with local growers and healthy food habits.',
         'Lakeview School',
-        '2024-02-22'
+        CURRENT_DATE + 28
     ),
     (
         2,
@@ -126,14 +129,14 @@ VALUES (
         'Food Pantry Packing Day',
         'Helping package and sort donations for families in need across the region.',
         'Hope House',
-        '2024-01-25'
+        CURRENT_DATE + 21
     ),
     (
         3,
         'Disaster Relief Support',
         'Coordinating volunteer teams to assist with community preparedness and emergency supplies.',
         'City Emergency Center',
-        '2024-02-14'
+        CURRENT_DATE + 35
     ),
     (
         3,
@@ -161,17 +164,23 @@ VALUES (
 -- ========================================
 CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL,
+    CONSTRAINT uq_category_name UNIQUE (name)
 );
---- ========================================
---- project_category Table
---- ========================================
+-- ========================================
+-- Project Category Junction Table
+-- ========================================
 CREATE TABLE project_category (
-    project_id INT NOT NULL REFERENCES service_project(project_id),
-    category_id INT NOT NULL REFERENCES category(category_id),
-    PRIMARY KEY (project_id, category_id),
-    FOREIGN KEY (project_id) REFERENCES service_project(project_id),
-    FOREIGN KEY (category_id) REFERENCES category(category_id)
+    project_id INT NOT NULL,
+    category_id INT NOT NULL,
+    CONSTRAINT pk_project_category
+        PRIMARY KEY (project_id, category_id),
+    CONSTRAINT fk_project_category_project
+        FOREIGN KEY (project_id)
+        REFERENCES service_project(project_id),
+    CONSTRAINT fk_project_category_category
+        FOREIGN KEY (category_id)
+        REFERENCES category(category_id)
 );
 INSERT INTO category (name)
 VALUES ('Community Development'),
@@ -183,4 +192,16 @@ VALUES (1, 1),
     (2, 1),
     (2, 2),
     (3, 1),
-    (3, 2);
+    (3, 2),
+    (4, 1),
+    (5, 1),
+    (6, 1),
+    (7, 2),
+    (8, 1),
+    (9, 1),
+    (10, 1),
+    (11, 2),
+    (12, 3),
+    (13, 2),
+    (14, 1),
+    (15, 1);

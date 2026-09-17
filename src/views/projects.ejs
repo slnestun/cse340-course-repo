@@ -13,10 +13,18 @@
                         timeZone: 'UTC'
                     });
             %>
-            <li>
-                <%= formattedDate %>: <%= project.title %>
-                (<strong><%= project.organization_name %></strong>)
-            </li>
+        <li>
+            <%= formattedDate %>:
+            <a href="/project/<%= project.project_id %>">
+                <%= project.title %>
+            </a>
+
+            (<strong>
+                <a href="/organization/<%= project.organization_id %>">
+                    <%= project.organization_name %>
+                </a>
+            </strong>)
+        </li>
         <% }); %>
     </ul>
 </main>
