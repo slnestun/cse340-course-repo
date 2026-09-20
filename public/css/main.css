@@ -253,3 +253,22 @@ footer p {
         transition-duration: 0.01ms !important;
     }
 }
+
+.category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.category-tag {
+    padding: 0.4rem 0.8rem;
+    color: #ffffff;
+    background-color: var(--color-primary);
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.category-tag:hover {
+    background-color: var(--color-primary-dark);
+}
