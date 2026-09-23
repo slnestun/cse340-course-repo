@@ -1,9 +1,12 @@
+import flash from './src/middleware/flash.js';
+import session from 'express-session';
 import express from 'express';
 import {fileURLToPath} from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
 import router from './src/routes.js';
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
 const nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
 const port = process.env.PORT || 3000;
 
@@ -12,6 +15,19 @@ const currentDirectory = path.dirname(currentFilePath);
 
 const app = express();
 
+// Set up session management
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
+}));
+// Use flash message middleware
+app.use(flash);
+
+// Allow Express to receive and process common POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // Serve static files from the public directory
 app.use(express.static(path.join(currentDirectory, 'public')));
 
