@@ -2,6 +2,7 @@
 <main>
     <h1><%= title %></h1>
     <p>Here are some of the categories we offer:</p>
+    <p><a href="/new-category">Add a New Category</a></p>
     <ul>
         <% categories.forEach(category => { %>
             <li><strong><a href="/category/<%= category.category_id %>"><%= category.name %></a></strong></li>
