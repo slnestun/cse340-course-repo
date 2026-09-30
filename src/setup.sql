@@ -40,9 +40,7 @@ CREATE TABLE service_project (
     description TEXT NOT NULL,
     location VARCHAR(255) NOT NULL,
     date DATE NOT NULL,
-    CONSTRAINT fk_service_project_organization
-        FOREIGN KEY (organization_id)
-        REFERENCES organization(organization_id)
+    CONSTRAINT fk_service_project_organization FOREIGN KEY (organization_id) REFERENCES organization(organization_id)
 );
 -- ========================================
 -- Insert sample data: Service Projects
@@ -173,14 +171,9 @@ CREATE TABLE category (
 CREATE TABLE project_category (
     project_id INT NOT NULL,
     category_id INT NOT NULL,
-    CONSTRAINT pk_project_category
-        PRIMARY KEY (project_id, category_id),
-    CONSTRAINT fk_project_category_project
-        FOREIGN KEY (project_id)
-        REFERENCES service_project(project_id),
-    CONSTRAINT fk_project_category_category
-        FOREIGN KEY (category_id)
-        REFERENCES category(category_id)
+    CONSTRAINT pk_project_category PRIMARY KEY (project_id, category_id),
+    CONSTRAINT fk_project_category_project FOREIGN KEY (project_id) REFERENCES service_project(project_id),
+    CONSTRAINT fk_project_category_category FOREIGN KEY (category_id) REFERENCES category(category_id)
 );
 INSERT INTO category (name)
 VALUES ('Community Development'),
@@ -205,3 +198,28 @@ VALUES (1, 1),
     (13, 2),
     (14, 1),
     (15, 1);
+-- ========================================
+-- Create roles table
+-- ========================================
+CREATE TABLE roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    role_description TEXT
+);
+---=========================================
+-- Insert sample data: Roles
+-- ========================================
+INSERT INTO roles (role_name, role_description)
+VALUES ('user', 'Standard user with basic access'),
+    ('admin', 'Administrator with full system access');
+--==========================================
+-- Create users table
+--==========================================
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role_id INTEGER REFERENCES roles(role_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
